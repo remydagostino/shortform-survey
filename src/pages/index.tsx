@@ -5,6 +5,7 @@ import { QuestionFormItem } from "../components/SurveyQuestion";
 
 const pageStyles: React.CSSProperties = {
   color: "#232129",
+  background: '#fefefe',
   padding: 12,
   fontFamily: "Roboto, sans-serif, serif",
   maxWidth: 800,
