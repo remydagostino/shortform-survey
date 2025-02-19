@@ -5,7 +5,7 @@ import { QuestionFormItem } from "../components/SurveyQuestion";
 
 const pageStyles: React.CSSProperties = {
   color: "#232129",
-  padding: 20,
+  padding: 12,
   fontFamily: "Roboto, sans-serif, serif",
   maxWidth: 800,
   margin: '0 auto'
@@ -34,7 +34,7 @@ const IndexPage: React.FC<PageProps> = () => {
           />) 
         }
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6, paddingBottom: 20 }}>
         <h2 style={{ margin: 0 }}>Short code:</h2>
         <code style={{background: '#eee', padding: '3px' }}>{shortCode}</code>
         <button onClick={onCopyClick}>Copy</button>
