@@ -2,6 +2,7 @@ import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import { usePanasState, panasQuestions } from "../data/panas";
 import { QuestionFormItem } from "../components/SurveyQuestion";
+import { ClearUndoButton } from "../components/ClearUndoButton";
 
 const pageStyles: React.CSSProperties = {
   color: "#232129",
@@ -13,7 +14,13 @@ const pageStyles: React.CSSProperties = {
 }
 
 const IndexPage: React.FC<PageProps> = () => {
-  const { surveyAnswers, updateSurveyAnswers, shortCode } = usePanasState();
+  const { 
+    clearAnswers, 
+    undoLastClear, 
+    updateSurveyAnswers, 
+    shortCode, 
+    surveyAnswers 
+  } = usePanasState();
 
   const onCopyClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((e) => {
     e.preventDefault();
@@ -23,7 +30,10 @@ const IndexPage: React.FC<PageProps> = () => {
 
   return (
     <main style={pageStyles}>
-      <h1>Panas Survey</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>Panas Survey</h1>
+        <ClearUndoButton clearEffectFn={clearAnswers} undoEffectFn={undoLastClear} />
+      </div>
       <div style={{ marginBottom: 20 }}>
         { panasQuestions.map(({title, code, index, description}) => 
           <QuestionFormItem 
@@ -31,6 +41,7 @@ const IndexPage: React.FC<PageProps> = () => {
             title={title} 
             description={description} 
             code={code}
+            value={surveyAnswers.get(code)}
             onChange={(code, value) => updateSurveyAnswers({ code, value })}
           />) 
         }
@@ -46,4 +57,4 @@ const IndexPage: React.FC<PageProps> = () => {
 
 export default IndexPage
 
-export const Head: HeadFC = () => <title>Home Page</title>
+export const Head: HeadFC = () => <title>Panas Survey</title>

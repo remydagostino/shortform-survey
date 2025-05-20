@@ -41,10 +41,14 @@ export const panasAnswers: Array<SurveyQuestionAnswer> = [
   { value: 2, description: 'Moderately' },
   { value: 3, description: 'Quite a bit' },
   { value: 4, description: 'Extremely' }
-]
+];
+
+export type SurveyAnswerMap = Map<string, number>;
 
 export const usePanasState = () => {
-  const [surveyAnswers, setSurveyAnswers] = React.useState(new Map<string, number>());
+  const [lastSurveyAnsers, setLastSurveyAnwers] = React.useState<SurveyAnswerMap>(new Map());
+
+  const [surveyAnswers, setSurveyAnswers] = React.useState<SurveyAnswerMap>(new Map());
 
   const updateSurveyAnswers = React.useCallback(({ code, value }: { code: string, value: number }) => {
     const updatedAnswers = new Map(surveyAnswers);
@@ -53,6 +57,17 @@ export const usePanasState = () => {
 
     setSurveyAnswers(updatedAnswers);
   }, [surveyAnswers, setSurveyAnswers])
+
+  const clearAnswers = React.useCallback(() => {
+    if (surveyAnswers.size > 0) {
+      setLastSurveyAnwers(surveyAnswers);
+      setSurveyAnswers(new Map());
+    }
+  }, [surveyAnswers, setLastSurveyAnwers, setSurveyAnswers])
+
+  const undoLastClear = React.useCallback(() => {
+    setSurveyAnswers(lastSurveyAnsers);
+  }, [lastSurveyAnsers, setSurveyAnswers])
 
   const shortCode = React.useMemo(() => {
     return surveyAnswers
@@ -66,6 +81,8 @@ export const usePanasState = () => {
   return {
     surveyAnswers,
     updateSurveyAnswers,
+    clearAnswers,
+    undoLastClear,
     shortCode
   };
 }
