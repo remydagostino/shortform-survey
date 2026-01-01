@@ -1,16 +1,4 @@
-import React from "react";
-
-export type SurveyQuestion = {
-  title: string,
-  description: string,
-  index: number,
-  code: string,
-}
-
-export type SurveyQuestionAnswer = {
-  value: number,
-  description: string;
-}
+import { SurveyQuestion, SurveyQuestionAnswer } from "./useSurveyState";
 
 export const panasQuestions: Array<SurveyQuestion> = [
   { title: 'Interested', index: 1, code: 'In', description: 'Curious or attentive toward something new.' },
@@ -42,47 +30,3 @@ export const panasAnswers: Array<SurveyQuestionAnswer> = [
   { value: 3, description: 'Quite a bit' },
   { value: 4, description: 'Extremely' }
 ];
-
-export type SurveyAnswerMap = Map<string, number>;
-
-export const usePanasState = () => {
-  const [lastSurveyAnsers, setLastSurveyAnwers] = React.useState<SurveyAnswerMap>(new Map());
-
-  const [surveyAnswers, setSurveyAnswers] = React.useState<SurveyAnswerMap>(new Map());
-
-  const updateSurveyAnswers = React.useCallback(({ code, value }: { code: string, value: number }) => {
-    const updatedAnswers = new Map(surveyAnswers);
-
-    updatedAnswers.set(code, value);
-
-    setSurveyAnswers(updatedAnswers);
-  }, [surveyAnswers, setSurveyAnswers])
-
-  const clearAnswers = React.useCallback(() => {
-    if (surveyAnswers.size > 0) {
-      setLastSurveyAnwers(surveyAnswers);
-      setSurveyAnswers(new Map());
-    }
-  }, [surveyAnswers, setLastSurveyAnwers, setSurveyAnswers])
-
-  const undoLastClear = React.useCallback(() => {
-    setSurveyAnswers(lastSurveyAnsers);
-  }, [lastSurveyAnsers, setSurveyAnswers])
-
-  const shortCode = React.useMemo(() => {
-    return surveyAnswers
-      .entries()
-      .filter(([_, value]) => value > 0)
-      .map(([code, value]) => `${code}${value}`)
-      .toArray()
-      .join(',')
-  }, [surveyAnswers]);
-
-  return {
-    surveyAnswers,
-    updateSurveyAnswers,
-    clearAnswers,
-    undoLastClear,
-    shortCode
-  };
-}

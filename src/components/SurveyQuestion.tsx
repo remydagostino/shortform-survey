@@ -1,5 +1,5 @@
 import * as React from "react"
-import { panasAnswers } from "../data/panas";
+import { SurveyQuestionAnswer } from "../data/useSurveyState";
 import "./SurveyQuestion.css"
 
 export type SurveyQuestionProps = {
@@ -10,6 +10,13 @@ export type SurveyQuestionProps = {
   onChange: (code: string, score: number) => void
 }
 
+export const fivePointScaleAnswers: Array<SurveyQuestionAnswer> = [
+  { value: 0, description: 'Not at all' },
+  { value: 1, description: 'A little' },
+  { value: 2, description: 'Moderately' },
+  { value: 3, description: 'Quite a bit' },
+  { value: 4, description: 'Extremely' }
+];
 
 export const QuestionFormItem: React.FC<SurveyQuestionProps> = ({ title, description, code, value, onChange }) => {
   return (
@@ -17,7 +24,7 @@ export const QuestionFormItem: React.FC<SurveyQuestionProps> = ({ title, descrip
       <h3 style={{marginBottom: 0}}>{title}</h3>
       <p style={{margin: '8px 0 12px'}}>{description}</p>
       <fieldset className="SurveyQuestion--fieldset">
-        {panasAnswers.map(({ value: answerValue, description: answerDescription }) => {
+        {fivePointScaleAnswers.map(({ value: answerValue, description: answerDescription }) => {
           return (
             <label 
               className={`SurveyQuestion--label SurveyQuestion--magnitude-${answerValue}`} 
